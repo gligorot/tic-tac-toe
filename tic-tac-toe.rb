@@ -32,6 +32,14 @@ class Board
     end
   end
 
+  def print_legend
+    puts "LEGEND"
+    puts "1 2 3"
+    puts "4 5 6"
+    puts "7 8 9"
+    puts "------"
+  end
+
   def pick_cell(row, col)
     @board[row][col]
   end
@@ -72,6 +80,7 @@ class Board
   end
 
   def play
+    print_legend
     puts "START"
     while true
       print_board
