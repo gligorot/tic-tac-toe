@@ -52,6 +52,38 @@ class Board
     raise ArgumentError if pick_cell(row, col).symbol == @two.color || pick_cell(row, col).symbol == @one.color
   end
 
+  def win_check #may be too big accorting to OOP standars...but fuck them
+    win_terms = [
+      #horizontal
+      ["1","2","3"],
+      ["4","5","6"],
+      ["7","8","9"],
+      #vertical
+      ["1","4","7"],
+      ["2","5","8"],
+      ["3","6","9"],
+      #diagonal
+      ["1","5","9"],
+      ["3","5","7"]
+    ]
+
+    win_terms.any? do |term| #any? and each both seem to work same
+      result = term.map do |x|
+        row, col = get_move(x)
+        pick_cell(row, col).symbol
+      end
+
+      result.all? {|x| x == result[0] && (x == @one.color || x == @two.color)}
+    end
+
+  end
+
+  def draw_check
+
+    #@board[0].all? {|x| !(x.symbol.empty?) && (x== @one.color || x== @two.color)}
+  end
+
+
   def switch_players
     @one, @two = @two, @one
   end
@@ -84,8 +116,15 @@ class Board
     puts "START"
     while true
       print_board
+      puts "DRAW" if draw_check == true
+      if win_check == true
+        puts "GAME OVER, #{@two.name.upcase} WINS!!!"
+        return
+      elsif win_check == false && draw_check == true
+        puts "DRAW, NO WINNERS :("
+        return
+      end
       puts next_move
-
       begin
         row, col = get_move
         check_full(row, col)
@@ -94,7 +133,7 @@ class Board
         retry
       end
       set_cell(row, col, @one.color)
-      # unless pick_cell(row, col).symbol == @two.color
+      #return if win_check == true
       switch_players
     end
   end
