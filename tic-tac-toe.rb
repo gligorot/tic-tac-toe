@@ -79,8 +79,9 @@ class Board
   end
 
   def draw_check
-
-    #@board[0].all? {|x| !(x.symbol.empty?) && (x== @one.color || x== @two.color)}
+    @board.all? do |row|
+      row.all? {|cell| cell.symbol.empty? != true}
+    end
   end
 
 
@@ -116,7 +117,6 @@ class Board
     puts "START"
     while true
       print_board
-      puts "DRAW" if draw_check == true
       if win_check == true
         puts "GAME OVER, #{@two.name.upcase} WINS!!!"
         return
